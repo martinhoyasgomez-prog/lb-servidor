@@ -22,7 +22,7 @@ http.createServer((q,r)=>{
     if(!/^[\w\- ]{2,16}$/.test(name))return send(r,400,{ok:0,error:'nombre no válido'});
     const k=name.toLowerCase(),o=db[k]||{name,coins:0,kills:0,deaths:0,wins:0};
     for(const f of['coins','kills','deaths','wins'])o[f]=Math.max(o[f],Math.floor(Math.max(0,+d[f]||0)));
-    o.name=name;db[k]=o;save();send(r,200,{ok:1});});}
+    o.name=name;if(typeof d.t==='string')o.t=d.t.replace(/[<>]/g,'').slice(0,24);if(typeof d.c==='string')o.c=d.c.replace(/[<>]/g,'').slice(0,24);db[k]=o;save();send(r,200,{ok:1});});}
  if(q.method==='GET'&&path==='/rooms'){return send(r,200,activeRooms());}
  if(q.method==='POST'&&path==='/rooms'){
   return body(q,d=>{
